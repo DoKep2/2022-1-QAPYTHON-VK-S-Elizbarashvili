@@ -33,7 +33,7 @@ def test_user_can_log_out(browser):
                           NavbarPageNames.PRO,
                           NavbarPageNames.PROFILE,
                           NavbarPageNames.TOOLS])
-def test_banana(browser, navbar_page_name):
+def test_user_can_switch_navbar_page(browser, navbar_page_name):
     link = "https://target.my.com/dashboard"
     page = NavbarPage(browser, link)
     page.open()

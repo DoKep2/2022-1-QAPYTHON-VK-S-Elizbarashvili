@@ -2,24 +2,24 @@ from selenium.webdriver.common.by import By
 
 
 class AuthorizedMainPageLocators:
-    LOG_OUT_BUTTON = (By.XPATH, "//a[@class='rightMenu-module-rightMenuLink-2j8bjX' and @href='/logout']")
-    RIGHT_MODULE_BUTTON = (By.CSS_SELECTOR, ".right-module-rightButton-3e-duF.right-module-mail-aXwV1G")
+    LOG_OUT_BUTTON = (By.XPATH, "//a[contains(@class, 'rightMenu-module-rightMenuLink') and @href='/logout']")
+    RIGHT_MODULE_BUTTON = (By.XPATH, "//div[contains(@class, 'right-module-rightButton')]")
     CAMPAIGNS_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-campaigns-3KazFg' and @href='/dashboard']")
+        (By.XPATH, "//a[contains(@class, 'center-module-campaigns')]")
     AUDIENCES_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-segments-1MqckW' and @href='/segments']")
+        (By.XPATH, "//a[contains(@class, 'center-module-segments')]")
     BILLING_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-billing-1cIfj4' and @href='/billing']")
+        (By.XPATH, "//a[contains(@class, 'center-module-billing')]")
     STATISTICS_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-statistics-2Wbrwh' and @href='/statistics']")
+        (By.XPATH, "//a[contains(@class, 'center-module-statistics')]")
     PRO_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-pro-1lbACy' and @href]")
+        (By.XPATH, "//a[contains(@class, 'center-module-pro')]")
     PROFILE_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-profile-1kuUOa' and @href='/profile']")
+        (By.XPATH, "//a[contains(@class, 'center-module-profile')]")
     TOOLS_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-tools-dypAE6' and @href='/tools']")
+        (By.XPATH, "//a[contains(@class, 'center-module-tools')]")
     HELP_LINK = \
-        (By.XPATH, "//a[@class='center-module-button-14O4yB center-module-help-2k80UI' and @href]")
+        (By.XPATH, "//a[contains(@class, 'center-module-help')]")
 
 
 class ProfilePageLocators:
@@ -31,8 +31,8 @@ class ProfilePageLocators:
 class LogInModalPanelLocators:
     EMAIL_INPUT = (By.CSS_SELECTOR, "[name='email']")
     PASSWORD_INPUT = (By.CSS_SELECTOR, "[name='password']")
-    SUBMIT_BUTTON = (By.XPATH, "//div[@class='authForm-module-button-1u2DYF']")
+    SUBMIT_BUTTON = (By.XPATH, "//div[contains(@class, 'authForm-module-button')]")
 
 
 class UnauthorizedMainPageLocators:
-    LOG_IN_BUTTON = (By.CSS_SELECTOR, ".responseHead-module-button-2yl51i")
+    LOG_IN_BUTTON = (By.XPATH, "//div[contains(@class, 'responseHead-module-button')]")

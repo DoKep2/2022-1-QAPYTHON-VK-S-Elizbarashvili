@@ -30,5 +30,4 @@ def browser(request):
     else:
         pass
     yield browser
-    time.sleep(3)
     browser.quit()

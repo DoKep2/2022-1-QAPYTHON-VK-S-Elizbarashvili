@@ -17,7 +17,6 @@ def setup(browser):
     log_in_modal_panel.log_in(LOGIN, PASSWORD)
 
 
-@pytest.mark.skip
 def test_user_can_change_name(browser):
     link = "https://target.my.com/profile/contacts"
     page = ProfilePage(browser, link)
@@ -25,7 +24,6 @@ def test_user_can_change_name(browser):
     page.change_full_name()
 
 
-@pytest.mark.skip
 def test_user_can_change_phone_number(browser):
     link = "https://target.my.com/profile/contacts"
     page = ProfilePage(browser, link)

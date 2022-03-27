@@ -3,7 +3,6 @@ from ui.pages.log_in_modal_panel import LogInModalPanel
 from ui.pages.unauthorized_main_page import UnauthorizedMainPage
 
 
-@pytest.mark.skip
 def test_guest_can_log_in(browser):
     LOGIN = "esmbot@yandex.ru"
     PASSWORD = "36hrzUCPJj-&T2."
@@ -15,7 +14,6 @@ def test_guest_can_log_in(browser):
     log_in_modal_panel.log_in(LOGIN, PASSWORD)
 
 
-@pytest.mark.skip
 def test_guest_should_see_log_in_button(browser):
     link = "https://target.my.com/dashboard"
     page = UnauthorizedMainPage(browser, link)
