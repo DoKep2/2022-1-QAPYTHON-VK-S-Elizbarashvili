@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class CampaignsBasePageLocators:
     CREATE_CAMPAIGN_BUTTON = (By.XPATH, "//div[contains(@class, 'dashboard-module-createButtonWrap')]/div/div")
     ADVERTISED_OBJECT_LINK_INPUT = (By.XPATH, "//input[@data-gtm-id = 'ad_url_text']")
-    NOTIFY_SUCCESS_MODULE = (By.XPATH, "//div[contains(@class, 'notify-module-success')]")
+    NOTIFY_SUCCESS_ICON = (By.XPATH, "//div[contains(@class, 'icon-success')]")
 
     class NewCampaignPageLocators:
         BANNER_FORMATS_MODULE = (By.XPATH, "//div[contains(@class, 'bannerFormats-module-formatsWrap')]")
@@ -16,6 +16,8 @@ class CampaignsBasePageLocators:
             By.XPATH,
             "//div[@class='footer__button js-save-button-wrap']/button[@class='button button_submit']"
         )
+        PRICE_SLIDER_SETTING_BUTTON = (By.CSS_SELECTOR, '.price-slider-setting__btn')
+        CAMPAIGN_NAME_INPUT = (By.CSS_SELECTOR, '.input_campaign-name > * > *')
 
         class CampaignObjectivesButtonsLocators:
             TRAFFIC = (By.CSS_SELECTOR, "._traffic")
@@ -81,6 +83,8 @@ class AudiencesBasePageLocators:
         By.XPATH,
         "(//input[contains(@class, 'segmentsTable-module-idCellCheckbox')]/following-sibling::span)[1]"
     )
+    SEARCH_INPUT = (By.XPATH, '//input[contains(@class, "suggester-module-searchInput")]')
+    SUGGESTER_MODULE_OPTION = (By.XPATH, '//li[contains(@class, "suggester-module-option")]')
 
     class NewSegmentModalPanelLocators:
         ADD_SEGMENT_BUTTON = (By.CSS_SELECTOR, "div.adding-segments-modal__btn-wrap button.button.button_submit")
@@ -90,6 +94,7 @@ class AudiencesBasePageLocators:
 
     class NewSegmentPageLocators:
         CREATE_SEGMENT_BUTTON = (By.CSS_SELECTOR, ".button__text")
+        SEGMENT_NAME_INPUT = (By.CSS_SELECTOR, '.input_create-segment-form > * > *')
 
 
 class BillingPageLocators:

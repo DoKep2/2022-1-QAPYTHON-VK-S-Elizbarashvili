@@ -1,11 +1,12 @@
 import os
 
 from enums.campaign_objective_names import CampaignObjectiveNames
-from ui import input_data_generator
+from ui.input_data_generator import MyFaker
 from ui.locators.navbar_pages_locators import CampaignsBasePageLocators as Base
 from ui.pages.navbar_pages.navbar_page import NavbarPage
 from matchings.campaign_objectives_locators_matching import CampaignObjectivesLocatorsMatching
 from matchings.banner_formats_locators_matching import BannerFormatsLocatorsMatching
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class CampaignsPage(NavbarPage):
@@ -20,7 +21,7 @@ class CampaignsPage(NavbarPage):
 
     def enter_advertised_object_link(self):
         link_input = self.find(Base.ADVERTISED_OBJECT_LINK_INPUT)
-        link_input.send_keys(input_data_generator.fake_url())
+        link_input.send_keys(MyFaker.fake_url())
 
     def choose_format(self, banner_format):
         banner_formats = self.find(Base.NewCampaignPageLocators.BANNER_FORMATS_MODULE)
@@ -43,7 +44,16 @@ class CampaignsPage(NavbarPage):
         save_ad_btn.click()
         assert self.is_element_present(Base.NewCampaignPageLocators.PREVIEW_TABS_CONTAINER)
 
-    def create_campaign(self):
+    def wait_slider_loading(self, timeout=10):
+        slider = Base.NewCampaignPageLocators.PRICE_SLIDER_SETTING_BUTTON
+        self.wait(timeout).until(EC.visibility_of_element_located(slider))
+
+    def create_campaign(self, name=MyFaker.fake_name()):
+
+        campaign_name_input = self.find(Base.NewCampaignPageLocators.CAMPAIGN_NAME_INPUT)
+        campaign_name_input.clear()
+        campaign_name_input.send_keys(name)
+        self.wait_slider_loading()
         create_campaign_button = self.find(Base.NewCampaignPageLocators.CREATE_CAMPAIGN_BUTTON)
         create_campaign_button.click()
 
@@ -51,7 +61,7 @@ class CampaignsPage(NavbarPage):
         assert self.is_element_present(Base.NewCampaignPageLocators.TAB_MODULE_GREEN), "photo isn't uploaded"
 
     def campaign_was_created(self):
-        assert self.is_element_present(Base.NOTIFY_SUCCESS_MODULE), "campaign wasn't created"
+        assert self.is_element_present(Base.NOTIFY_SUCCESS_ICON), "campaign wasn't created"
 
 
 

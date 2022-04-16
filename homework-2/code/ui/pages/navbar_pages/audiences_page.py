@@ -1,12 +1,15 @@
+import pdb
+
 from ui.pages.navbar_pages.navbar_page import NavbarPage
 from ui.locators.navbar_pages_locators import AudiencesBasePageLocators
+from ...input_data_generator import MyFaker
 from ...locators.basic_locators import get_data_locator_by_action_and_id
 
 loc = AudiencesBasePageLocators.NewSegmentModalPanelLocators
 
 
 class AudiencesPage(NavbarPage):
-    def create_segment(self):
+    def create_segment(self, name=MyFaker.fake_name()):
         current_segments_amount = self.get_current_segments_list_size()
         if current_segments_amount == 0:
             create_segment_btn = self.find(AudiencesBasePageLocators.CREATE_SEGMENT_LINK)
@@ -19,13 +22,24 @@ class AudiencesPage(NavbarPage):
         played_and_paid_checkbox.click()
         add_segment_btn = self.find(loc.ADD_SEGMENT_BUTTON)
         add_segment_btn.click()
+        segment_name_input = self.find(AudiencesBasePageLocators.NewSegmentPageLocators.SEGMENT_NAME_INPUT)
+        segment_name_input.clear()
+        segment_name_input.send_keys(name)
         create_segment_btn = self.find(AudiencesBasePageLocators.NewSegmentPageLocators.CREATE_SEGMENT_BUTTON)
         create_segment_btn.click()
         self.segments_list_has_correspondent_size(current_segments_amount + 1)
+        return name
+
+    def find_segment(self, segment_name):
+        search_input = self.find(AudiencesBasePageLocators.SEARCH_INPUT)
+        search_input.send_keys(segment_name)
+        option = self.find(AudiencesBasePageLocators.SUGGESTER_MODULE_OPTION)
+        option.click()
 
     def delete_segment(self):
         current_segments_amount = self.get_current_segments_list_size()
-        self.create_segment()
+        segment_name = self.create_segment()
+        self.find_segment(segment_name)
         segment_remove_btn = self.find(get_data_locator_by_action_and_id('remove', self.get_first_segment_id()))
         segment_remove_btn.click()
         self.confirm_deletion()
