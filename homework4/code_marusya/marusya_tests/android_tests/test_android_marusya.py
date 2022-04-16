@@ -1,10 +1,10 @@
 import pytest
 
 from enums.news_source_names import NewsSourceNames
-from wiki_tests.base import BaseCase
+from marusya_tests.base import BaseCase
 
 
-class TestWikipediaAndroid(BaseCase):
+class TestMarusyaAndroid(BaseCase):
 
     @pytest.mark.AndroidUI
     def test_command_window_interaction(self):
@@ -25,10 +25,10 @@ class TestWikipediaAndroid(BaseCase):
         self.main_page.ask_Marusya("News", "Включаю новости")
 
     @pytest.mark.AndroidUI
-    def test_settings_interaction(self, repo_root):
+    def test_settings_interaction(self, repo_root, get_apk_version):
         self.main_page.go_to_settings_page()
         self.settings_page.go_to_about_page()
-        self.about_page.check_version(repo_root)
+        self.about_page.check_version(repo_root, get_apk_version)
 
     @pytest.mark.AndroidUI
     def test_check_trademark(self):

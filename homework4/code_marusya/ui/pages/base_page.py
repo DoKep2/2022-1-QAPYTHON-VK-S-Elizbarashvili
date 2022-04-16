@@ -1,6 +1,3 @@
-import logging
-
-import allure
 from appium.webdriver.common.touch_action import TouchAction
 from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, WebDriverException
 from selenium.webdriver import ActionChains
@@ -8,13 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from ui.locators.locators_android import RequestPermissionWindowLocators
-from utils.decorators import wait
 
 CLICK_RETRY = 3
 BASE_TIMEOUT = 5
-
-
-logger = logging.getLogger('test')
 
 
 class PageNotLoadedException(Exception):
@@ -26,11 +19,6 @@ class BasePage(object):
     def __init__(self, driver, config):
         self.driver = driver
         self.config = config
-        self.url = self.config['url']
-        self.device = self.config['device_os']
-
-        logger.info(f'{self.__class__.__name__} page is opening...')
-        assert self.is_opened()
 
     def allow_request_permission(self):
         permission_allow_button = self.find(RequestPermissionWindowLocators.PERMISSION_ALLOW_BUTTON)
@@ -46,18 +34,6 @@ class BasePage(object):
         except WebDriverException:
             return False
         return True
-
-    def is_opened(self):
-        if self.device != 'android':
-            def _check_url():
-                if self.url not in self.driver.current_url:
-                    raise PageNotLoadedException(
-                        f'{self.url} did not opened in {BASE_TIMEOUT} for {self.__class__.__name__}.\n'
-                        f'Current url: {self.driver.current_url}.')
-                return True
-            return wait(_check_url, error=PageNotLoadedException, check=True, timeout=BASE_TIMEOUT, interval=0.1)
-        else:
-            return True
 
     def find(self, locator, timeout=BASE_TIMEOUT):
         return self.wait(timeout).until(EC.presence_of_element_located(locator))
@@ -75,10 +51,8 @@ class BasePage(object):
     def scroll_to(self, element):
         self.driver.execute_script('arguments[0].scrollIntoView(true);', element)
 
-    @allure.step('Clicking {locator}')
     def click(self, locator, timeout=None):
         for i in range(CLICK_RETRY):
-            logger.info(f'Clicking on {locator}. Try {i+1} of {CLICK_RETRY}...')
             try:
                 element = self.find(locator, timeout=timeout)
                 self.scroll_to(element)
@@ -89,10 +63,8 @@ class BasePage(object):
                 if i == CLICK_RETRY - 1:
                     raise
 
-    @allure.step('Clicking {locator}')
     def click_for_android(self, locator, timeout=None):
         for i in range(CLICK_RETRY):
-            logger.info(f'Clicking on {locator}. Try {i+1} of {CLICK_RETRY}...')
             try:
                 element = self.find(locator, timeout=timeout)
                 element = self.wait(timeout).until(EC.element_to_be_clickable(locator))
@@ -167,4 +139,3 @@ class BasePage(object):
             move_to(x=destination_x, y=middle_y). \
             release(). \
             perform()
-
