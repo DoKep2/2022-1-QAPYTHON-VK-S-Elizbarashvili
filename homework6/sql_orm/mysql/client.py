@@ -9,7 +9,7 @@ class MysqlClient:
     def __init__(self, db_name):
         self.user = 'root'
         self.port = 3306
-        self.password = '0000'
+        self.password = 'pass'
         self.host = '127.0.0.1'
         self.db_name = db_name
 
