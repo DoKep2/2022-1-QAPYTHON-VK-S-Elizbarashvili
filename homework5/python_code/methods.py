@@ -12,6 +12,12 @@ class Methods:
         with open('access.log') as file:
             lines = file.readlines()
         requests_lines = [RequestLine(*i.split(' ')) for i in lines]
+        gen_delims = ['?', "#"]
+        for line in requests_lines:
+            line.request_type = line.request_type[1:]
+            for delim in gen_delims:
+                if delim in line.request_url:
+                    line.request_url = line.request_url.split(delim)[0]
         return requests_lines
 
     def get_urls(self):
@@ -21,7 +27,7 @@ class Methods:
     def get_request_count_by_type(self, request_type):
         res = 0
         for i in self.lines:
-            if request_type in i.request_type:
+            if request_type == i.request_type:
                 res += 1
         return request_type, res
 

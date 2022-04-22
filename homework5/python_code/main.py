@@ -32,11 +32,15 @@ class LogAnalyzer:
 
     def print_top_memory_4XX_error_requests(self, top):
         requests = sorted(self.methods.get_requests_by_request_status("4.."), key=lambda x: int(x.body_bytes_send),
-                          reverse=True)
+                              reverse=True)
+        present_urls = set()
         cnt = 0
         for i in requests:
-            self.write(i.request_url, i.request_status, i.body_bytes_send, i.ip)
-            cnt += 1
+            if i.request_url not in present_urls:
+                self.write(i.request_url, i.request_status, i.body_bytes_send, i.ip)
+                cnt += 1
+                present_urls.add(i.request_url)
+
             if cnt == top:
                 break
 
