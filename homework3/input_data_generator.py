@@ -3,13 +3,16 @@ import random
 import faker
 
 
-def fake_phone_number(fake: faker.Faker()) -> str:
-    return f'+7-{fake.msisdn()[0:3]}-{fake.msisdn()[0:3]}-{fake.msisdn()[0:2]}-{fake.msisdn()[0:2]}'
+class MyFaker:
 
+    @staticmethod
+    def fake_phone_number() -> str:
+        return f'+7-{faker.Faker().msisdn()[0:3]}-{faker.Faker().msisdn()[0:3]}-{faker.Faker.msisdn()[0:2]}-{faker.Faker().msisdn()[0:2]}'
 
-def fake_name(fake: faker.Faker()) -> str:
-    return fake.name()
+    @staticmethod
+    def fake_name() -> str:
+        return faker.Faker().name()
 
-
-def fake_url() -> str:
-    return f'https://{"".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))}.com'
+    @staticmethod
+    def fake_url() -> str:
+        return f'https://{"".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))}.com'

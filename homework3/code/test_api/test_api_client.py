@@ -20,4 +20,5 @@ class TestApi:
 
     @pytest.mark.API
     def test_can_create_campaign(self, api_client):
-        api_client.create_campaign()
+        new_campaign_id = api_client.create_campaign()
+        api_client.delete_campaign(new_campaign_id)

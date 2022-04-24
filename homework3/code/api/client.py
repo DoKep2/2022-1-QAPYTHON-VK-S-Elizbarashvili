@@ -1,21 +1,10 @@
-import json
 import random
-import faker
+
 import requests
 
-from input_data_generator import fake_name
-from data.campaign_create_data import *
-
-f = faker.Faker()
-SEGMENTS_LIMIT = 100
-
-
-class RespondErrorException(Exception):
-    pass
-
-
-class ResponseStatusCodeException(Exception):
-    pass
+from api_exceptions import ResponseStatusCodeException, RespondErrorException
+from data.segment_create_data import SegmentCreateData
+from homework3.input_data_generator import MyFaker
 
 
 class ApiClient:
@@ -25,26 +14,17 @@ class ApiClient:
         self.password = password
         self.session = requests.Session()
 
-    def _request(self, method, location, headers=None, data=None, expected_status=200, jsonify=True, params=None,
-                 json=None):
+    def _request(self, method, location, headers=None, data=None, expected_status=200, params=None, json=None):
         url = location
         response = self.session.request(method=method, url=url, headers=headers, data=data, params=params, json=json)
         if response.status_code != expected_status:
             raise ResponseStatusCodeException(f'Got {response.status_code} {response.reason} for URL "{url}"')
 
-        if jsonify:
-            json_response = response.json()
-            if json_response.get('bStateError', False):
-                error = json_response['sErrorMsg'] or 'Unknown'
-                raise RespondErrorException(f'Request {url} returned error {error}!')
-
-            return json_response
-
         return response
 
     def get_token(self):
-        location = 'https://target.my.com/csrf/'
-        res = self._request('GET', location, jsonify=False)
+        location = self.base_url
+        res = self._request('GET', location)
         headers = res.headers['Set-Cookie'].split(';')
         token_header = [c for c in headers if 'csrftoken' in c]
         if not token_header: raise Exception('csrf_token not found')
@@ -67,7 +47,7 @@ class ApiClient:
             'failure': 'https://account.my.com/login/'
         }
 
-        result = self._request('POST', url, headers=headers, data=data, jsonify=False)
+        result = self._request('POST', url, headers=headers, data=data)
         self.csrf_token = self.get_token()
         return result
 
@@ -76,33 +56,19 @@ class ApiClient:
             "X-CSRFToken": f'{self.csrf_token}',
         }
 
-        data = {
-            "name": fake_name(f),
-            "logicType": "or",
-            "pass_condition": "1",
-            "relations": [
-                {
-                    "object_type": "remarketing_player",
-                    "params": {
-                        "type": "positive",
-                        "left": "365",
-                        "right": "0"
-                    },
-                }
-            ]
-        }
-        url = f"https://target.my.com/api/v2/remarketing/segments.json?limit={SEGMENTS_LIMIT}"
+        data = SegmentCreateData.data
+        url = f"https://target.my.com/api/v2/remarketing/segments.json"
 
         resp = self.session.post(url=url, headers=headers, json=data)
-        segment_id = json.loads(resp.content.decode('utf-8'))['id']
+        segment_id = resp.json()['id']
         self.find_segment(segment_id, segment_exists=True)
 
     def get_segments(self):
-        url = f"https://target.my.com/api/v2/remarketing/segments.json?limit={SEGMENTS_LIMIT}"
+        url = f"https://target.my.com/api/v2/remarketing/segments.json"
         return self.session.get(url).json()
 
     def get_campaigns(self):
-        url = f"https://target.my.com/api/v2/campaigns.json?limit={SEGMENTS_LIMIT}"
+        url = f"https://target.my.com/api/v2/campaigns.json"
         return self.session.get(url).json()
 
     def get_segments_id(self):
@@ -114,20 +80,18 @@ class ApiClient:
         return [i['id'] for i in resp['items']]
 
     def find_segment(self, segment_id, segment_exists=True):
-        resp = self.get_segments_id()
-        segments = [i for i in resp if segment_id == i]
-        assert (len(segments) != 0) == segment_exists
+        url = f"https://target.my.com/api/v2/remarketing/segments/{segment_id}.json"
+        resp: dict = self.session.get(url).json()
+        assert ((resp.get('id') == segment_id) == segment_exists)
 
     def find_campaign(self, campaign_id, campaign_exists=True):
-        resp = self.get_campaigns_id()
-        campaigns = [i for i in resp if campaign_id == i]
-        assert (len(campaigns) != 0) == campaign_exists
+        url = f"https://target.my.com/api/v2/campaigns/{campaign_id}.json?fields=status"
+        resp = self.session.get(url).json()
+        assert ((resp.get('status') == "active") == campaign_exists)
 
     def get_random_existing_segment_id(self):
         all_segments_id = self.get_segments_id()
-        if len(all_segments_id) == 0:
-            print("Nothing to delete")
-            return
+        assert len(all_segments_id) != 0, "No segments to delete"
         index = random.randint(0, len(all_segments_id) - 1)
         return all_segments_id[index]
 
@@ -145,24 +109,48 @@ class ApiClient:
         headers = {
             "X-CSRFToken": f'{self.csrf_token}',
         }
-        resp = self.session.delete(url, headers=headers)
-        assert resp.status_code == 204
+        self.session.delete(url, headers=headers)
+        self.find_campaign(campaign_id, campaign_exists=False)
         print(f"Campaign with id: {campaign_id} was deleted")
 
-    def create_campaign(self, name=fake_name(f)):
+    def create_picture(self):
+        location = "https://target.my.com/api/v2/content/static.json"
+        headers = {
+            "X-CSRFToken": self.csrf_token,
+        }
+        file = {
+            "file": open("../data/picture.png", "rb"),
+        }
+        return self.session.post(url=location, headers=headers, files=file)
+
+    def get_picture_url_id(self, image_id):
+        url = "https://target.my.com/api/v2/mediateka.json"
+        headers = {
+            "X-CSRFToken": self.csrf_token,
+        }
+        data = {
+            "content": {
+                "id": image_id
+            },
+            "description": "picture.png"
+        }
+        resp = self.session.post(url=url, headers=headers, json=data)
+        return resp.json()['id']
+
+    def create_campaign(self, objective='traffic', package_id=961):
         url = "https://target.my.com/api/v2/campaigns.json"
         headers = {
-            "Referer": 'https://target.my.com/campaign/new',
-            "X-CSRFToken": self.csrf_token
+            "X-CSRFToken": self.csrf_token,
         }
-
+        picture_data = self.create_picture().json()
+        image_id = picture_data['id']
+        url_id = self.get_picture_url_id(image_id)
         data = {
             "banners": [{"content": {"image_240x400": {"id": image_id}}, "urls": {"primary": {"id": url_id}}}],
-            "name": name,
+            "name": MyFaker.fake_name(),
             "objective": objective,
             "package_id": package_id,
         }
         resp = self.session.post(url=url, headers=headers, json=data)
         campaign_id = resp.json()['id']
-        self.find_campaign(campaign_id, campaign_exists=True)
-        self.delete_campaign(campaign_id)
+        return campaign_id
