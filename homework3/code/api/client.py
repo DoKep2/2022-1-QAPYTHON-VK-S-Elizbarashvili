@@ -1,3 +1,4 @@
+import os
 import random
 
 import requests
@@ -119,7 +120,7 @@ class ApiClient:
             "X-CSRFToken": self.csrf_token,
         }
         file = {
-            "file": open("../data/picture.png", "rb"),
+            "file": open(f"..{os.sep}data{os.sep}picture.png", "rb"),
         }
         return self.session.post(url=location, headers=headers, files=file)
 

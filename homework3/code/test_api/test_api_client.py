@@ -15,6 +15,7 @@ class TestApi:
 
     @pytest.mark.API
     def test_delete_random_existing_segment(self, api_client):
+        api_client.add_segment()
         segment_id = api_client.get_random_existing_segment_id()
         api_client.delete_segment(segment_id)
 
