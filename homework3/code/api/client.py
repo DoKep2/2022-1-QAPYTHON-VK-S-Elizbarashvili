@@ -120,7 +120,7 @@ class ApiClient:
             "X-CSRFToken": self.csrf_token,
         }
         file = {
-            "file": open(f"..{os.sep}data{os.sep}picture.png", "rb"),
+            "file": open(f"homework3/code/data/picture.png", "rb"),
         }
         return self.session.post(url=location, headers=headers, files=file)
 
