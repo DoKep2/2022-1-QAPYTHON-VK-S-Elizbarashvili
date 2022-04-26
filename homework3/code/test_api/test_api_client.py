@@ -14,10 +14,9 @@ class TestApi:
         api_client.add_segment()
 
     @pytest.mark.API
-    def test_delete_random_existing_segment(self, api_client):
-        api_client.add_segment()
-        segment_id = api_client.get_random_existing_segment_id()
-        api_client.delete_segment(segment_id)
+    def test_delete_segment(self, api_client):
+        new_segment_id = api_client.add_segment()
+        api_client.delete_segment(new_segment_id)
 
     @pytest.mark.API
     def test_can_create_campaign(self, api_client):

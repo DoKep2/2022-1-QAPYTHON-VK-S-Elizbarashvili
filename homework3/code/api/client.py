@@ -63,6 +63,7 @@ class ApiClient:
         resp = self.session.post(url=url, headers=headers, json=data)
         segment_id = resp.json()['id']
         self.find_segment(segment_id, segment_exists=True)
+        return segment_id
 
     def get_segments(self):
         url = f"https://target.my.com/api/v2/remarketing/segments.json"
