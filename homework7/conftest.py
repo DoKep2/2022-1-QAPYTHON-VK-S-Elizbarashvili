@@ -31,7 +31,7 @@ def start_mock():
 
 
 def stop_mock():
-    requests.get(f'https://{settings.MOCK_HOST}:{settings.MOCK_PORT}/shutdown')
+    requests.get(f'http://{settings.MOCK_HOST}:{settings.MOCK_PORT}/shutdown')
 
 
 def pytest_configure(config):
