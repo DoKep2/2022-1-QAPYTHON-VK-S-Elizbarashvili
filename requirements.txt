@@ -13,5 +13,8 @@ zipp==3.6.0
 Appium-Python-Client==1.1.0
 pymysql==1.0.2
 SQLAlchemy==1.4.35
-Flask==2.1.0
-werkzeug==2.1.1
+faker==13.3.1
+Flask==1.1.2
+jinja2<3.1.0
+itsdangerous==2.0.1
+werkzeug==2.0.3
