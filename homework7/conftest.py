@@ -5,9 +5,9 @@ import pytest
 import requests
 from requests.exceptions import ConnectionError
 
-import settings
-from application.client import HttpClient
-from mock import flask_mock
+from homework7.code.application.client import HttpClient
+from homework7 import settings
+from homework7.code.mock import flask_mock
 
 
 def wait_ready(host, port):
