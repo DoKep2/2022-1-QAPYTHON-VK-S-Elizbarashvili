@@ -1,5 +1,6 @@
 import sqlalchemy
 from sqlalchemy import inspect
+from sqlalchemy.exc import OperationalError, ProgrammingError
 from sqlalchemy.orm import sessionmaker
 from models.models import Base
 
@@ -23,7 +24,6 @@ class MysqlClient:
         url = f'mysql+pymysql://{self.user}:{self.password}@{self.host}:{self.port}/{db}'
         self.engine = sqlalchemy.create_engine(url)
         self.connection = self.engine.connect()
-
         session = sessionmaker(bind=self.connection.engine)
         self.session = session()
 
@@ -31,6 +31,7 @@ class MysqlClient:
         self.connect(db_created=False)
         self.execute_query(f'DROP database IF EXISTS {self.db_name}')
         self.execute_query(f'CREATE database {self.db_name}')
+        self.connection.close()
 
     def create_table(self, table_name):
         if not inspect(self.engine).has_table(table_name):
