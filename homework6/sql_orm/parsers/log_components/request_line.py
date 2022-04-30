@@ -1,5 +1,3 @@
-
-
 from parsers.log_components.local_time import LocalTime
 
 
