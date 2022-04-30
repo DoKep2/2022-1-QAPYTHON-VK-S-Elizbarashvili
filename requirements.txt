@@ -11,7 +11,7 @@ pymysql==1.0.2
 pycparser==2.21
 pytest-xdist==2.5.0
 requests==2.22.0
-selenium==4.0.0a5
+selenium==3.14.1
 SQLAlchemy==1.4.35
 webdriver-manager==3.3.0
 Appium-Python-Client==1.1.0
