@@ -1,13 +1,16 @@
+import os
 import re
 
 
 class Methods:
     def __init__(self):
-        self.lines = self.get_requests_lines()
+        from conftest import repo_root
+        self.lines = self.get_requests_lines(repo_root())
 
     @staticmethod
-    def get_requests_lines():
-        with open('../access.log') as file:
+    def get_requests_lines(repo_root):
+        root_path = repo_root
+        with open(f'{root_path}{os.sep}access.log') as file:
             lines = file.readlines()
         from parsers.log_components.request_line import RequestLine
         requests_lines = [RequestLine(*i.split(' ')) for i in lines]

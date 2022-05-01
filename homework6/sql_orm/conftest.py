@@ -1,15 +1,17 @@
-import sys
-from os import O_CREAT
+import os
 
 import pytest
-from xdist import get_xdist_worker_id
 
 from mysql.client import MysqlClient
 from parsers.log_analyzer import LogAnalyzer
 
 
+def repo_root():
+    return os.path.abspath(os.path.join(__file__, os.path.pardir))
+
+
 def pytest_configure(config):
-    if str(config.workerinput["workerid"]) == "gw0":
+    if not hasattr(config, "workerinput") or str(config.workerinput["workerid"]) == "gw0":
         mysql_client = MysqlClient(db_name='TEST_SQL')
         mysql_client.create_db()
         mysql_client.connect(db_created=True)
