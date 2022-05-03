@@ -1,0 +1,31 @@
+----------Requests amount:----------
+225133
+----------Requests amount by type (amount, type):----------
+ 122095 GET
+ 102503 POST
+    528 HEAD
+      6 PUT
+      1 g369g=%40eval%01%28base64_decode%28%24_POST%5Bz0%5D%29%29%3B&z0=QGluaV9zZXQoImRpc3BsYXlfZXJyb3JzIiwiMCIpO0BzZXRfdGltZV9saW1pdCgwKTtAc2V0X21hZ2ljX3F1b3Rlc19ydW50aW1lKDApO2VjaG8oIi0%2bfCIpOztlY2hvKCJlNTBiNWYyYjRmNjc1NGFmMDljYzg0NWI4YjU4ZTA3NiIpOztlY2hvKCJ8PC0iKTs7ZGllKCk7GET
+----------10 the most frequent requests (amount, url):----------
+ 103932 /administrator/index.php
+  26336 /apache-log/access.log
+   6940 /
+   4980 /templates/_system/css/general.css
+   3199 /robots.txt
+   2356 http://almhuette-raith.at/administrator/index.php
+   2201 /favicon.ico
+   1644 /wp-login.php
+   1563 /administrator/
+   1287 /templates/jp_hotel/css/template.css
+----------5 the biggest requests with request status 4XX (url, status code, size, ip):----------
+/index.php?option=com_phocagallery&view=category&id=7806&Itemid=53 404 1417 189.217.45.73
+/index.php?option=com_phocagallery&view=category&id=4025&Itemid=53 404 1417 189.217.45.73
+/index.php?option=com_phocagallery&view=category&id=%28SELECT%20%28CASE%20WHEN%20%289168%3D4696%29%20THEN%209168%20ELSE%209168%2A%28SELECT%209168%20FROM%20INFORMATION_SCHEMA.CHARACTER_SETS%29%20END%29%29&Itemid=53 404 1417 189.217.45.73
+/index.php?option=com_phocagallery&view=category&id=%28SELECT%20%28CASE%20WHEN%20%281753%3D1753%29%20THEN%201753%20ELSE%201753%2A%28SELECT%201753%20FROM%20INFORMATION_SCHEMA.CHARACTER_SETS%29%20END%29%29&Itemid=53 404 1417 189.217.45.73
+/index.php?view=videos&type=member&user_id=66+and+1=0+union+select+1,2,3,4,5,6,7,8,9,10,11,12,concat%280x3c757365723e,username,0x3c757365723e3c706173733e,password,0x3c706173733e%29,14,15,16,17,18,19,20,21,22,23,24,25,26+from+jos_users+where+gid=25+limit+0,1--&option=com_mytube 404 1397 5.206.77.93
+----------Top-5 users by amount of requests with status 5XX (amount, ip):----------
+225 189.217.45.73
+4 82.193.127.15
+3 91.210.145.36
+2 198.38.94.207
+2 195.133.48.198
