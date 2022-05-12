@@ -8,6 +8,9 @@ class HttpClient:
         self.port = port
         self.client = None
 
+    def close(self):
+        self.client.close()
+
     def connect(self):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.settimeout(0.5)
@@ -23,6 +26,7 @@ class HttpClient:
             request += '\r\n'
         self.client.send(request.encode())
         response = self.client_recv()
+        self.close()
         return response
 
     def get_teacher_rate(self, name):
