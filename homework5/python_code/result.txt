@@ -1,0 +1,31 @@
+----------Requests amount:----------
+(225133,)
+----------Requests amount by type (type, amount):----------
+(('POST', 102503),)
+(('g369g=%40eval%01%28base64_decode%28%24_POST%5Bz0%5D%29%29%3B&z0=QGluaV9zZXQoImRpc3BsYXlfZXJyb3JzIiwiMCIpO0BzZXRfdGltZV9saW1pdCgwKTtAc2V0X21hZ2ljX3F1b3Rlc19ydW50aW1lKDApO2VjaG8oIi0%2bfCIpOztlY2hvKCJlNTBiNWYyYjRmNjc1NGFmMDljYzg0NWI4YjU4ZTA3NiIpOztlY2hvKCJ8PC0iKTs7ZGllKCk7GET', 1),)
+(('GET', 122095),)
+(('HEAD', 528),)
+(('PUT', 6),)
+----------10 the most frequent requests (url, amount):----------
+('/administrator/index.php', 103939)
+('/apache-log/access.log', 26336)
+('/index.php', 7682)
+('/', 6981)
+('/templates/_system/css/general.css', 4980)
+('/robots.txt', 3199)
+('http://almhuette-raith.at/administrator/index.php', 2356)
+('/favicon.ico', 2201)
+('/wp-login.php', 1757)
+('/administrator/', 1563)
+----------5 the biggest requests with request status 4XX (url, status code, size, ip):----------
+('/index.php', '404', '1417', '189.217.45.73')
+('//index.php', '404', '1397', '177.75.16.72')
+('/', '404', '1397', '81.17.16.116')
+('//index.php/component/users/', '404', '1397', '213.205.38.22')
+('//index.php/joomla-pages-ii/user-registration.html', '404', '1397', '213.205.38.22')
+----------Top-5 users by amount of requests with status 5XX (ip, amount):----------
+('189.217.45.73', 225)
+('82.193.127.15', 4)
+('91.210.145.36', 3)
+('194.87.237.6', 2)
+('198.38.94.207', 2)
