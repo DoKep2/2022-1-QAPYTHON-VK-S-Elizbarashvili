@@ -1,0 +1,68 @@
+services:
+  mysql:
+    networks:
+      net: null
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - ./code/config/mysql-init.sql:/data/application/mysql-init.sql
+    command: --init-file /data/application/mysql-init.sql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', '-uroot', '-ppass', 'ping', '-h', '127.0.0.1']
+      interval: 3s
+      retries: 5
+  app:
+    networks:
+      net: null
+    ports:
+      - "8089:8089"
+    image: myapp
+    tty: true
+    entrypoint: /app/myapp --config=/app/app-config
+    volumes:
+      - ./code/config/creds.py:/app/app-config
+      - ./:/finalProject
+    depends_on:
+      mysql:
+        condition: service_healthy
+  tests:
+    networks:
+      net: null
+    image: req
+    tty: true
+    volumes:
+    - ./code:/tmp/code
+    - /allure-results:/tmp/allure
+    entrypoint: /bin/bash /tmp/code/start_tests.sh
+    environment:
+      - MYSQL_USER=test_qa
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_PASSWORD=qa_test
+    depends_on:
+      app:
+        condition: service_started
+
+  selenoid:
+        networks:
+          net: null
+        image: "aerokube/selenoid:latest"
+        volumes:
+          - ./code/config:/etc/browser
+          - /var/run/docker.sock:/var/run/docker.sock
+        command: [ "-conf", "/etc/browser/browsers.json", "-container-network", "net"]
+  vk_mock:
+    networks:
+      net: null
+    image: "vk_mock"
+    volumes:
+      - ./code/vk_mock:/tmp/vk_mock
+    entrypoint: /bin/bash /tmp/vk_mock/start_tests.sh
+
+networks:
+  net:
+    external:
+      name: net

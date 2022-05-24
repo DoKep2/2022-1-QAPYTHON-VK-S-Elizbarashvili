@@ -1,0 +1,1 @@
+{"uuid": "7ab7dd12-b2e8-43f3-95f5-27c44285f116", "children": ["324c0d11-7037-4744-a1e1-8a78c50e141c"], "befores": [{"name": "mysql_client", "status": "passed", "start": 1653182119506, "stop": 1653182119519}], "afters": [{"name": "mysql_client::0", "status": "passed", "start": 1653182139687, "stop": 1653182139687}], "start": 1653182119506, "stop": 1653182139688}
