@@ -1,0 +1,13 @@
+{
+    "chrome": {
+        "applicationContainers": ["app:mysql"],
+        "default": "98.0",
+        "versions": {
+            "98.0": {
+                "image": "selenoid/chrome:98.0",
+                "port": "4444",
+                "env" : ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8"]
+            }
+        }
+    }
+}
